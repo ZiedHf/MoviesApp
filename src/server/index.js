@@ -4,4 +4,4 @@ function getData(api) {
   return fetch(`${path}${api}`).then(data => data.json());
 }
 
-export { getData };
+export default getData;

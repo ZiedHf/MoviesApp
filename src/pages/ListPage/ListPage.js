@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader } from '../../components';
+import getData from '../../server';
+
+// TODO: Add search fields
+// TODO: Add reset button
 
 class ListPage extends Component {
   constructor(props) {
@@ -12,9 +16,7 @@ class ListPage extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3030/movies')
-      .then(response => response.json())
-      .then(movies => this.setState({ movies, loading: false }));
+    getData('movies').then(movies => this.setState({ movies, loading: false }));
   }
 
   render() {

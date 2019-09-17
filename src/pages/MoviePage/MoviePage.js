@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // Helpers
 import isEmpty from 'lodash/isEmpty';
 // API
-import { getData } from '../../server';
+import getData from '../../server';
 // Components
 import { Loader } from '../../components';
 // CSS
