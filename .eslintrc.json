@@ -13,6 +13,7 @@
     "react/prefer-stateless-function": 0,
     "react/static-property-placement": 0,
     "react/require-default-props": 0,
+    "react/destructuring-assignment": 0,
     "import/prefer-default-export": 0,
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "max-len": [

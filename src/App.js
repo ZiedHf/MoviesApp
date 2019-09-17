@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { HelloPage, ListPage, ErrorPage } from './pages';
+import { HelloPage, ListPage, ErrorPage, MoviePage } from './pages';
 import { Menu } from './components';
 import './App.css';
 
@@ -11,8 +11,8 @@ function App() {
         <Menu />
         <Switch>
           <Route path="/" exact component={HelloPage} />
+          <Route path="/movies/:id" component={MoviePage} />
           <Route path="/movies" component={ListPage} />
-          {/* <Route path="/movies/:id" component={MoviePage} /> */}
           <Route component={ErrorPage} />
         </Switch>
       </Router>
