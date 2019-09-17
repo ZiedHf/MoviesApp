@@ -1,14 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { HelloPage, ListPage } from './pages';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HelloPage, ListPage, ErrorPage } from './pages';
+import { Menu } from './components';
 import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Route path="/" exact component={HelloPage} />
-      <Route path="/list" exact component={ListPage} />
-    </Router>
+    <div>
+      <Router>
+        <Menu />
+        <Switch>
+          <Route path="/" exact component={HelloPage} />
+          <Route path="/movies" component={ListPage} />
+          {/* <Route path="/movies/:id" component={MoviePage} /> */}
+          <Route component={ErrorPage} />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
