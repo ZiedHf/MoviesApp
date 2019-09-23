@@ -61,12 +61,7 @@ class Card extends Component {
           <span className="title">{title}</span>
           {year ? <span className="year">{` (${year})`}</span> : null}
         </div>
-        {showDetails ? (
-          <div className="body">
-            <hr />
-            <p className="description">{description}</p>
-          </div>
-        ) : null}
+        {showDetails ? <div>{description}</div> : null}
         <div className="footer">
           {showDescBtn ? (
             <Button

@@ -5,7 +5,7 @@ import './Button.css';
 
 class Button extends Component {
   static propTypes = {
-    type: PropTypes.oneOf(['default', 'danger', 'success']),
+    type: PropTypes.oneOf(['default', 'danger', 'success', 'disabled']),
     label: PropTypes.string,
     onClick: PropTypes.func,
     style: PropTypes.object,
@@ -17,8 +17,14 @@ class Button extends Component {
 
   render() {
     const { label, onClick, style, type } = this.props;
+    const isDisabled = type === 'disabled';
     return (
-      <button type="button" onClick={onClick} style={style} className={type}>
+      <button
+        type="button"
+        onClick={!isDisabled && onClick}
+        style={style}
+        className={type}
+      >
         {label}
       </button>
     );

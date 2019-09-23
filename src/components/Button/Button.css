@@ -8,6 +8,10 @@ button {
   border-radius: 5px;
 }
 
+button.disabled {
+  cursor: not-allowed;
+}
+
 button.danger {
   background-color: #c12222;
   color: white;
