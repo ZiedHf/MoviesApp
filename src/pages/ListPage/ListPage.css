@@ -1,0 +1,14 @@
+ul.moviesListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+ul.moviesListContainer > li {
+  width: 50%;
+}
+
+.configs {
+  display: flex;
+  justify-content: center;
+}

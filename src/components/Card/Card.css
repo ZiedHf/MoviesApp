@@ -1,0 +1,14 @@
+.card {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  max-width: 600px;
+  border: 2px solid red;
+  margin: 15px;
+  padding: 10px;
+}
+
+.card > div {
+  flex: 1 1 100%;
+  margin: 10px 0px;
+}
