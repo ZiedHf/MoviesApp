@@ -44,6 +44,10 @@ class HelloPage extends Component {
           label="Go To Last Movie"
           onClick={() => history.push('/movies/98')}
         />
+        <Button
+          label="Search for Zied Movies"
+          onClick={() => history.push('/movies?cast=Zied Hf')}
+        />
       </div>
     );
   }

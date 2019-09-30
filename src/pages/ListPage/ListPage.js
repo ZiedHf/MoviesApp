@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // Router
 import { withRouter } from 'react-router';
+import queryString from 'query-string';
 // Helpers
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
@@ -33,13 +34,19 @@ class ListPage extends Component {
 
   constructor(props) {
     super(props);
+    const query = queryString.parse(get(this.props, 'location.search'));
+    const filters = {};
+    const { title, cast, genres } = query;
+    if (title) filters.filterTitle = title;
+    if (cast) filters.filterCast = cast;
+    if (genres) filters.filterGenres = genres;
     this.state = {
       movies: [],
       cast: [],
       genres: [],
       loading: true,
       togglerHideAll: false,
-      filters: {},
+      filters,
     };
   }
 
