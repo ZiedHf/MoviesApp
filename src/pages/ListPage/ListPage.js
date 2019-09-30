@@ -2,10 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // Router
 import { withRouter } from 'react-router';
+// Helpers
+import get from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
+
+import { removeDuplicates } from '../../utils';
 // API
 import getData from '../../server';
 // Component
-import { Loader, Card, Button } from '../../components';
+import {
+  Loader,
+  Card,
+  Button,
+  Container,
+  Combo,
+  Input,
+} from '../../components';
 
 // CSS
 import './ListPage.css';
@@ -23,13 +35,24 @@ class ListPage extends Component {
     super(props);
     this.state = {
       movies: [],
+      cast: [],
+      genres: [],
       loading: true,
       togglerHideAll: false,
+      filters: {},
     };
   }
 
   componentDidMount() {
-    getData('movies').then(movies => this.setState({ movies, loading: false }));
+    getData('movies').then(movies => {
+      const cast = removeDuplicates(
+        movies.map(movie => movie.cast).flat(),
+      ).sort();
+      const genres = removeDuplicates(
+        movies.map(movie => movie.genres).flat(),
+      ).sort();
+      this.setState({ movies, cast, genres, loading: false });
+    });
   }
 
   hideAllToggler = () => {
@@ -38,21 +61,70 @@ class ListPage extends Component {
     }));
   };
 
+  onChangeFilter = (e, filter) => {
+    const newValue = get(e, 'target.value');
+    this.setState(prevState => {
+      const filters = cloneDeep(prevState.filters);
+      filters[filter] = newValue;
+      return { filters };
+    });
+  };
+
+  resetFilters = () => this.setState({ filters: {} });
+
   render() {
-    const { movies, loading, togglerHideAll } = this.state;
+    const {
+      movies,
+      loading,
+      togglerHideAll,
+      cast,
+      genres,
+      filters: { filterCast, filterGenres, filterTitle },
+    } = this.state;
     const { history } = this.props;
     if (loading) return <Loader />;
+    const moviesToDisplay = movies.filter(movie => {
+      if (filterCast && !movie.cast.includes(filterCast)) return false;
+      if (filterGenres && !movie.genres.includes(filterGenres)) return false;
+      if (
+        filterTitle &&
+        !movie.title.toLowerCase().includes(filterTitle.toLowerCase())
+      )
+        return false;
+      return true;
+    });
     return (
       <div>
-        <div className="configs">
-          <Button label="Hide All Details" onClick={this.hideAllToggler} />
-        </div>
-        {movies.length ? (
+        <Container>
+          <div className="configs">
+            <Button label="Hide All Details" onClick={this.hideAllToggler} />
+            <Button label="Reset Filters" onClick={this.resetFilters} />
+          </div>
+          <div className="filters">
+            <Input
+              label="Title"
+              value={filterTitle || ''}
+              onChange={e => this.onChangeFilter(e, 'filterTitle')}
+            />
+            <Combo
+              label="Cast"
+              options={cast}
+              onChange={e => this.onChangeFilter(e, 'filterCast')}
+              value={filterCast || ''}
+            />
+            <Combo
+              label="Genres"
+              options={genres}
+              onChange={e => this.onChangeFilter(e, 'filterGenres')}
+              value={filterGenres || ''}
+            />
+          </div>
+        </Container>
+        {moviesToDisplay.length ? (
           <ul className="moviesListContainer">
-            {movies.map(movie => (
-              <li>
+            {moviesToDisplay.map(movie => (
+              <li key={movie.id}>
                 <Card
-                  key={movie.id}
                   title={movie.title}
                   description={movie.description}
                   id={movie.id}

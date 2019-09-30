@@ -12,3 +12,8 @@ ul.moviesListContainer > li {
   display: flex;
   justify-content: center;
 }
+
+.filters {
+  display: flex;
+  justify-content: space-around;
+}

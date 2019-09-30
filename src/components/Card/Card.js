@@ -15,7 +15,7 @@ const btnStyle = {
 class Card extends Component {
   static propTypes = {
     title: PropTypes.string,
-    year: PropTypes.string,
+    year: PropTypes.number,
     description: PropTypes.string,
     history: PropTypes.object,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -23,7 +23,7 @@ class Card extends Component {
     onOpenPage: PropTypes.func,
   };
 
-  defaultProps = {
+  static defaultProps = {
     toggler: false,
   };
 
