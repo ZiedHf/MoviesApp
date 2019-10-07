@@ -6,6 +6,9 @@ import queryString from 'query-string';
 // Helpers
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
+// redux
+import { connect } from 'react-redux';
+import { onChangeTheme } from '../../Actions';
 
 import { removeDuplicates } from '../../utils';
 // API
@@ -30,7 +33,7 @@ class ListPage extends Component {
     history: PropTypes.shape({
       push: PropTypes.func,
     }),
-    onChangeTheme: PropTypes.func,
+    dispatch: PropTypes.func,
   };
 
   constructor(props) {
@@ -80,6 +83,11 @@ class ListPage extends Component {
 
   resetFilters = () => this.setState({ filters: {} });
 
+  onChangeTheme = () => {
+    const { dispatch } = this.props;
+    dispatch(onChangeTheme());
+  };
+
   render() {
     const {
       movies,
@@ -89,7 +97,7 @@ class ListPage extends Component {
       genres,
       filters: { filterCast, filterGenres, filterTitle },
     } = this.state;
-    const { history, onChangeTheme } = this.props;
+    const { history } = this.props;
     if (loading) return <Loader />;
     const moviesToDisplay = movies.filter(movie => {
       if (filterCast && !movie.cast.includes(filterCast)) return false;
@@ -139,7 +147,9 @@ class ListPage extends Component {
                   year={movie.year}
                   toggler={togglerHideAll}
                   onOpenPage={() => history.push(`/movies/${movie.id}`)}
-                  onChangeTheme={movie.id === 1 ? onChangeTheme : undefined}
+                  onChangeTheme={
+                    movie.id === 1 ? this.onChangeTheme : undefined
+                  }
                 />
               </li>
             ))}
@@ -152,4 +162,4 @@ class ListPage extends Component {
   }
 }
 
-export default withRouter(ListPage);
+export default connect()(withRouter(ListPage));

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { onChangeTheme } from '../../Actions';
 import { Button } from '../../components';
 
 class HelloPage extends Component {
@@ -8,11 +10,16 @@ class HelloPage extends Component {
     history: PropTypes.shape({
       push: PropTypes.func,
     }),
-    onChangeTheme: PropTypes.func,
+    dispatch: PropTypes.func,
+  };
+
+  onChangeTheme = () => {
+    const { dispatch } = this.props;
+    dispatch(onChangeTheme());
   };
 
   render() {
-    const { history, onChangeTheme } = this.props;
+    const { history } = this.props;
     return (
       <div>
         Hello There !
@@ -49,10 +56,10 @@ class HelloPage extends Component {
           label="Search for Zied Movies"
           onClick={() => history.push('/movies?cast=Zied Hf')}
         />
-        <Button label="Change theme" onClick={onChangeTheme} />
+        <Button label="Change theme" onClick={this.onChangeTheme} />
       </div>
     );
   }
 }
 
-export default withRouter(HelloPage);
+export default connect()(withRouter(HelloPage));

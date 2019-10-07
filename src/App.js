@@ -6,43 +6,44 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Redux
 import { connect } from 'react-redux';
 // Actions
-import { incrementCount } from './Actions';
+import { incrementCount, getThemes, onChangeTheme } from './Actions';
 // Component
 import { HelloPage, ListPage, ErrorPage, MoviePage } from './pages';
 import { Menu, Loader, Button } from './components';
 // API
-import getData from './server';
+// import getData from './server';
 import './App.css';
 
 class App extends Component {
   static propTypes = {
     count: PropTypes.number,
     dispatch: PropTypes.func,
+    themes: PropTypes.array,
+    selectedTheme: PropTypes.number,
   };
 
   state = {
-    themes: [],
-    selectedTheme: 0,
     loading: true,
   };
 
   componentDidMount() {
-    getData('themes').then(themes => {
-      this.setState({ themes, loading: false });
-    });
+    const { dispatch } = this.props;
+    dispatch(getThemes());
   }
 
   componentDidUpdate(prevProps) {
-    const { count: prevCount } = prevProps;
-    const { count } = this.props;
-    const { themes } = this.state;
+    const { count: prevCount, themes: prevThemes } = prevProps;
+    const { count, themes } = this.props;
+    if (themes.length && !prevThemes.length) this.setState({ loading: false });
     if (themes.length && prevCount !== count) this.onChangeTheme();
   }
 
   onChangeTheme = () => {
-    this.setState(prevState => ({
+    const { dispatch } = this.props;
+    dispatch(onChangeTheme());
+    /* this.setState(prevState => ({
       selectedTheme: prevState.selectedTheme === 0 ? 1 : 0,
-    }));
+    })); */
   };
 
   increment = () => {
@@ -51,8 +52,8 @@ class App extends Component {
   };
 
   render() {
-    const { themes, selectedTheme, loading } = this.state;
-    const { count } = this.props;
+    const { loading } = this.state;
+    const { count, themes, selectedTheme } = this.props;
 
     if (loading) return <Loader />;
     const theme = themes[selectedTheme];
@@ -62,13 +63,13 @@ class App extends Component {
           <Menu />
           <Switch>
             <Route path="/" exact>
-              <HelloPage theme={theme} onChangeTheme={this.onChangeTheme} />
+              <HelloPage theme={theme} />
             </Route>
             <Route path="/movies/:id">
               <MoviePage theme={theme} />
             </Route>
             <Route path="/movies">
-              <ListPage theme={theme} onChangeTheme={this.onChangeTheme} />
+              <ListPage theme={theme} />
             </Route>
             <Route component={ErrorPage} />
           </Switch>
@@ -82,8 +83,10 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ count }) => ({
+const mapStateToProps = ({ count, themes, selectedTheme }) => ({
   count,
+  themes,
+  selectedTheme,
 });
 
 export default connect(mapStateToProps)(App);
