@@ -30,6 +30,7 @@ class ListPage extends Component {
     history: PropTypes.shape({
       push: PropTypes.func,
     }),
+    onChangeTheme: PropTypes.func,
   };
 
   constructor(props) {
@@ -88,7 +89,7 @@ class ListPage extends Component {
       genres,
       filters: { filterCast, filterGenres, filterTitle },
     } = this.state;
-    const { history } = this.props;
+    const { history, onChangeTheme } = this.props;
     if (loading) return <Loader />;
     const moviesToDisplay = movies.filter(movie => {
       if (filterCast && !movie.cast.includes(filterCast)) return false;
@@ -138,6 +139,7 @@ class ListPage extends Component {
                   year={movie.year}
                   toggler={togglerHideAll}
                   onOpenPage={() => history.push(`/movies/${movie.id}`)}
+                  onChangeTheme={movie.id === 1 ? onChangeTheme : undefined}
                 />
               </li>
             ))}

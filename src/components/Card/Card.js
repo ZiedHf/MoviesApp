@@ -21,6 +21,7 @@ class Card extends Component {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     toggler: PropTypes.bool,
     onOpenPage: PropTypes.func,
+    onChangeTheme: PropTypes.func,
   };
 
   static defaultProps = {
@@ -52,7 +53,7 @@ class Card extends Component {
 
   render() {
     const { showDetails } = this.state;
-    const { title, year, description, onOpenPage } = this.props;
+    const { title, year, description, onOpenPage, onChangeTheme } = this.props;
     const showDescBtn = isString(description);
     const showOpenMovieBtn = isFunction(onOpenPage);
     return (
@@ -74,6 +75,13 @@ class Card extends Component {
             <Button
               label="Open Movie Page"
               onClick={onOpenPage}
+              style={btnStyle}
+            />
+          ) : null}
+          {onChangeTheme ? (
+            <Button
+              label="Change Theme"
+              onClick={onChangeTheme}
               style={btnStyle}
             />
           ) : null}

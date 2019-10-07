@@ -8,10 +8,11 @@ class HelloPage extends Component {
     history: PropTypes.shape({
       push: PropTypes.func,
     }),
+    onChangeTheme: PropTypes.func,
   };
 
   render() {
-    const { history } = this.props;
+    const { history, onChangeTheme } = this.props;
     return (
       <div>
         Hello There !
@@ -48,6 +49,7 @@ class HelloPage extends Component {
           label="Search for Zied Movies"
           onClick={() => history.push('/movies?cast=Zied Hf')}
         />
+        <Button label="Change theme" onClick={onChangeTheme} />
       </div>
     );
   }
